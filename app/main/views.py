@@ -2,7 +2,7 @@ from flask import render_template,redirect,url_for,abort
 from . import main
 from .forms import UpdateProfile,CommentForm,PitchForm
 from ..models import User,Pitch,Comment,PitchCategory
-from flask_login import login_required
+from flask_login import login_required,current_user
 from .. import db,photos
 
 @main.route('/')
@@ -12,9 +12,9 @@ def index():
     View root page function that returns the index page and its data
     '''
 
-    title = 'Home - Welcome to The best Movie Review Website Online'
-
-    return render_template('index.html', title = title)
+    title = 'Home - Welcome to The best pitches Website Online'
+    all_pitches = Pitch.get_all_pitches()
+    return render_template('index.html', title = title, all_pitches=all_pitches)
 
 @main.route('/user/<uname>')
 def profile(uname):
@@ -59,18 +59,20 @@ def update_pic(uname):
 @main.route('/new', methods=['GET', 'POST'])
 @login_required
 def new_pitch():
-    pitch_form = PitchForm()
+    form = PitchForm()
 
-    if pitch_form.validate_on_submit():
-        content  = pitch_form.content.data
-        
-        new_pitch = Pitch(content=content, user_id=current_user.id)
-        new_pitch.save_pitches()
+    if form.validate_on_submit():
+        # pitch = form.pitch.data
+        description = form.description.data
+
+        new_pitch = Pitch(description = description, user_id=current_user)
+        # new_pitch.save_pitches()
+        return redirect(url_for('main.index'))
         db.session.add(new_pitch)
         db.session.commit()
-        return redirect(url_for('main.index'))
-
-    return render_template('new_pitch.html', pitch_form=pitch_form)
+    
+    
+    return render_template('new_pitch.html', pitch_form=form)
 
 @main.route('/new', methods=['GET', 'POST'])
 @login_required

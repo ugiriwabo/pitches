@@ -43,8 +43,23 @@ class Pitch(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     pitch = db.Column(db.String)
     category_id = db.Column(db.Integer)
-    Description = db.Column(db.String(255))
+    description = db.Column(db.String(255))
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
+    comments = db.relationship('Comment',backref = 'pitch',lazy="dynamic")
+
+    def save_pitches(self):
+        '''
+        Function that saves pitches
+        '''
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_all_pitches(cls):
+        '''
+        Function that queries the databse and returns all the pitches
+        '''
+        return Pitch.query.all()
     
     
 class Comment(db.Model):

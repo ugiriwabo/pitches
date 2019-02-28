@@ -4,9 +4,11 @@ from wtforms.validators import Required,Email
 from ..models import User
 
 class PitchForm(FlaskForm):
-    content = TextAreaField('Pitch ', validators=[Required()])
+    pitch =  TextAreaField('Pitch ', validators=[Required()])
+    description = TextAreaField('description ', validators=[Required()])
     submit = SubmitField('Submit')
     
+
 class CommentForm(FlaskForm):
     username = TextAreaField('username comment', validators=[Required()])
     submit = SubmitField('Submit')
