@@ -1,6 +1,6 @@
 from flask import render_template,redirect,url_for,abort
 from . import main
-from .forms import UpdateProfile,CommentForm
+from .forms import UpdateProfile,CommentForm,PitchForm
 from ..models import User,Pitch,Comment,PitchCategory
 from flask_login import login_required
 from .. import db,photos
@@ -62,10 +62,9 @@ def new_pitch():
     pitch_form = PitchForm()
 
     if pitch_form.validate_on_submit():
-        title = pitch_form.title.data
         content  = pitch_form.content.data
         
-        new_pitch = Pitch(title=title,content=content, user_id=current_user.id)
+        new_pitch = Pitch(content=content, user_id=current_user.id)
         new_pitch.save_pitches()
         db.session.add(new_pitch)
         db.session.commit()
@@ -81,7 +80,7 @@ def new_comment():
     if comment_form.validate_on_submit():
         username  = comment_form.username.data
         
-        new_comment = Comment(title=title,content=content, user_id=current_user.id)
+        new_comment = Comment(username=username, user_id=current_user.id)
         new_comment.save_comment()
         db.session.add(new_pitch)
         db.session.commit()
