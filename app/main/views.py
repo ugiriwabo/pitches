@@ -1,7 +1,6 @@
 from flask import render_template,redirect,url_for,abort
 from . import main
-# from ..request import get_movies,get_movie,search_movie
-from .forms import ReviewForm,UpdateProfile
+from .forms import UpdateProfile,CommentForm
 from ..models import User,Pitch,Comment,PitchCategory
 from flask_login import login_required
 from .. import db,photos
@@ -16,22 +15,6 @@ def index():
     title = 'Home - Welcome to The best Movie Review Website Online'
 
     return render_template('index.html', title = title)
-
-@main.route('/movie/review/new/<int:id>', methods = ['GET','POST'])
-@login_required
-def new_review(id):
-    form = ReviewForm()
-    movie = get_movie(id)
-
-    if form.validate_on_submit():
-        title = form.title.data
-        review = form.review.data
-        new_review = Review(movie.id,title,movie.poster,review)
-        new_review.save_review()
-        return redirect(url_for('movie',id = movie.id ))
-
-    title = f'{movie.title} review'
-    return render_template('new_review.html',title = title, review_form=form, movie=movie)
 
 @main.route('/user/<uname>')
 def profile(uname):
@@ -72,3 +55,36 @@ def update_pic(uname):
         user.profile_pic_path = path
         db.session.commit()
     return redirect(url_for('main.profile',uname=uname))
+
+@main.route('/new', methods=['GET', 'POST'])
+@login_required
+def new_pitch():
+    pitch_form = PitchForm()
+
+    if pitch_form.validate_on_submit():
+        title = pitch_form.title.data
+        content  = pitch_form.content.data
+        
+        new_pitch = Pitch(title=title,content=content, user_id=current_user.id)
+        new_pitch.save_pitches()
+        db.session.add(new_pitch)
+        db.session.commit()
+        return redirect(url_for('main.index'))
+
+    return render_template('new_pitch.html', pitch_form=pitch_form)
+
+@main.route('/new', methods=['GET', 'POST'])
+@login_required
+def new_comment():
+    comment_form = CommentForm()
+
+    if comment_form.validate_on_submit():
+        username  = comment_form.username.data
+        
+        new_comment = Comment(title=title,content=content, user_id=current_user.id)
+        new_comment.save_comment()
+        db.session.add(new_pitch)
+        db.session.commit()
+        return redirect(url_for('main.index'))
+
+    return render_template('new_pitch.html', comment_form=comment_form)
