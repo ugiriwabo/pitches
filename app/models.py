@@ -17,6 +17,7 @@ class User(UserMixin, db.Model):
     profile_pic_path = db.Column(db.String())
     password_hash = db.Column(db.String(255))
     pass_secure = db.Column(db.String(255))
+    pitches=db.relationship('Pitch',backref='user',lazy='dynamic')
 
     def __repr__(self):
         return f'User {self.name}'
@@ -71,8 +72,19 @@ class Comment(db.Model):
     pitch_id = db.Column(db.Integer,db.ForeignKey('pitch.id'))
     username =  db.Column(db.String)
     votes= db.Column(db.Integer)
-  
+    def save_comment(self):
+            '''
+            Function that saves comments
+            '''
+            db.session.add(self)
+            db.session.commit()
    
+    @classmethod
+    def get_comments(cls,id):
+        comments = Comment.query.filter_by(pitch_id=id).all()
+
+        return comments
+
 class PitchCategory(db.Model):
     '''
     Function that defines different categories of pitches
@@ -82,3 +94,26 @@ class PitchCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name_of_category = db.Column(db.String(255))
     category_description = db.Column(db.String(255))
+
+class Profile(db.Model):
+    '''
+    Function that defines different categories of pitches
+    '''
+    __tablename__ ='pitch_profile'
+
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(255))
+
+    def save_profile(self):
+        '''
+        Function that saves pitches
+        '''
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_all_profile(cls):
+        '''
+        Function that queries the databse and returns all the pitches
+        '''
+        return Pitch.query.all()

@@ -22,7 +22,8 @@ def profile(uname):
 
     if user is None:
         abort(404)
-
+        db.session.add(user)
+        db.session.commit()
     return render_template("profile/profile.html", user = user)   
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
@@ -35,26 +36,12 @@ def update_profile(uname):
     form = UpdateProfile()
 
     if form.validate_on_submit():
-        user.bio = form.bio.data
-
-        db.session.add(user)
-        db.session.commit()
+        user.description = form.description.data
 
         return redirect(url_for('.profile',uname=user.username))
 
     return render_template('profile/update.html',form =form)
 
-
-@main.route('/user/<uname>/update/pic',methods= ['POST'])
-@login_required
-def update_pic(uname):
-    user = User.query.filter_by(username = uname).first()
-    if 'photo' in request.files:
-        filename = photos.save(request.files['photo'])
-        path = f'photos/{filename}'
-        user.profile_pic_path = path
-        db.session.commit()
-    return redirect(url_for('main.profile',uname=uname))
 
 @main.route('/new', methods=['GET', 'POST'])
 @login_required
@@ -62,30 +49,29 @@ def new_pitch():
     form = PitchForm()
 
     if form.validate_on_submit():
-        # pitch = form.pitch.data
+        pitch = form.pitch.data
         description = form.description.data
 
-        new_pitch = Pitch(description = description, user_id=current_user)
-        # new_pitch.save_pitches()
-        return redirect(url_for('main.index'))
-        db.session.add(new_pitch)
-        db.session.commit()
-    
-    
+        new_pitch = Pitch(pitch =pitch,description = description, user=current_user)
+        new_pitch.save_pitches()
+        return redirect(url_for('.index'))
     return render_template('new_pitch.html', pitch_form=form)
 
-@main.route('/new', methods=['GET', 'POST'])
-@login_required
-def new_comment():
-    comment_form = CommentForm()
+# @main.route('/pitch/comments/new/<int:id>',methods = ['GET','POST'])
+# @login_required
+# def new_comment(id):
+#     form = CommentsForm()
+#     vote_form = UpvoteForm()
+#     if form.validate_on_submit():
+#         new_comment = Comment(pitch_id =id,comment=form.comment.data,username=current_user.username,votes=form.vote.data)
+#         new_comment.save_comment()
+#         return redirect(url_for('main.index'))
+#     return render_template('new_comment.html',comment_form=form, vote_form= vote_form)
 
-    if comment_form.validate_on_submit():
-        username  = comment_form.username.data
-        
-        new_comment = Comment(username=username, user_id=current_user.id)
-        new_comment.save_comment()
-        db.session.add(new_pitch)
-        db.session.commit()
-        return redirect(url_for('main.index'))
-
-    return render_template('new_pitch.html', comment_form=comment_form)
+# @main.route('/view/comment/<int:id>')
+# def view_comments(id):
+#     '''
+#     Function that returs  the comments belonging to a particular pitch
+#     '''
+#     comments = Comment.get_comments(id)
+#     return render_template('view_comments.html',comments = comments, id=id)
