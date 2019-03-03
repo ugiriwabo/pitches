@@ -11,15 +11,10 @@ class PitchForm(FlaskForm):
     
 
 class CommentForm(FlaskForm):
-    username = TextAreaField('username comment', validators=[Required()])
+    comment = TextAreaField('username comment', validators=[Required()])
     submit = SubmitField('Submit')
 
 
 class UpdateProfile(FlaskForm):
     description = TextAreaField('Tell us about you.',validators = [Required()])
     submit = SubmitField('Submit')
-
-class CommentsForm(FlaskForm):
-    comment = TextAreaField('Comment', validators=[Required()])
-    vote=RadioField('default field arguments', choices=[('1', 'UpVote'), ('1', 'DownVote')])
-    submit = SubmitField('SUBMIT')

@@ -18,6 +18,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255))
     pass_secure = db.Column(db.String(255))
     pitches=db.relationship('Pitch',backref='user',lazy='dynamic')
+    pitches=db.relationship('Comment',backref='user',lazy='dynamic')
 
     def __repr__(self):
         return f'User {self.name}'
@@ -46,7 +47,7 @@ class Pitch(db.Model):
     category_id = db.Column(db.Integer)
     description = db.Column(db.String(255))
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
-    comments = db.relationship('Comment',backref = 'pitch',lazy="dynamic")
+    pitches = db.relationship('Comment',backref = 'pitch',lazy="dynamic")
 
     def save_pitches(self):
         '''
@@ -64,26 +65,24 @@ class Pitch(db.Model):
     
     
 class Comment(db.Model):
-    __tablename__ = 'comments'
+    __tablename__ = 'comment'
 
     id = db.Column(db.Integer,primary_key = True)
-    Comment = db.Column(db.String(255))
+    comment = db.Column(db.String(255))
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     pitch_id = db.Column(db.Integer,db.ForeignKey('pitch.id'))
-    username =  db.Column(db.String)
-    votes= db.Column(db.Integer)
+
+
+    def __repr__(self):
+        return f'User {self.name}'
+    
     def save_comment(self):
-            '''
-            Function that saves comments
-            '''
             db.session.add(self)
             db.session.commit()
    
     @classmethod
-    def get_comments(cls,id):
-        comments = Comment.query.filter_by(pitch_id=id).all()
-
-        return comments
+    def get_all_comments(cls):
+        return comment.query.all
 
 class PitchCategory(db.Model):
     '''

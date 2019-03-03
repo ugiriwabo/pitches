@@ -1,13 +1,13 @@
 from flask import render_template,redirect,url_for,abort
 from . import main
 from .forms import UpdateProfile,CommentForm,PitchForm
-from ..models import User,Pitch,Comment,PitchCategory
+from ..models import User,Pitch,Comment
 from flask_login import login_required,current_user
 from .. import db,photos
 
 @main.route('/')
 def index():
-
+    
     '''
     View root page function that returns the index page and its data
     '''
@@ -52,21 +52,22 @@ def new_pitch():
         pitch = form.pitch.data
         description = form.description.data
 
-        new_pitch = Pitch(pitch =pitch,description = description, user=current_user)
+        new_pitch = Pitch(pitch =pitch , description = description)
         new_pitch.save_pitches()
         return redirect(url_for('.index'))
     return render_template('new_pitch.html', pitch_form=form)
 
-# @main.route('/pitch/comments/new/<int:id>',methods = ['GET','POST'])
-# @login_required
-# def new_comment(id):
-#     form = CommentsForm()
-#     vote_form = UpvoteForm()
-#     if form.validate_on_submit():
-#         new_comment = Comment(pitch_id =id,comment=form.comment.data,username=current_user.username,votes=form.vote.data)
-#         new_comment.save_comment()
-#         return redirect(url_for('main.index'))
-#     return render_template('new_comment.html',comment_form=form, vote_form= vote_form)
+@main.route('/comment/<int:id>',methods = ['GET','POST'])
+@login_required
+def new_comment(id):
+    form = CommentForm()
+    imishwi =Comment.query.filter_by(pitch_id = id).all()
+    if form.validate_on_submit():
+        comment = form.comment.data
+        new_comment = Comment(comment = comment , pitch_id=id, user=current_user)
+        new_comment.save_comment()
+        return redirect(url_for('.new_comment'))
+    return render_template('new_comment.html', imishwi=imishwi,comment_form=form)
 
 # @main.route('/view/comment/<int:id>')
 # def view_comments(id):

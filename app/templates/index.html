@@ -3,21 +3,27 @@
 <!-- Styles block -->
 
 {% block content %}
-    <div class="container" style="background-color:gainsboro; padding:20px; margin-top:0px; padding-top:40px; padding-bottom:400px;">
+    <div class="container" style="background-color:gainsboro; padding:10px; margin-right:100px;margin-left: 100px">
         <div class="row" style="text-align:center; font-size:30px;">
             <span style="font-size:40px; font-family: 'Akronim', cursive;">PITCHES</span>
-            <p>Do you want to write a pitch. Sign up <a href="auth/register">here</a></p>
-
-            <p>Already signed in? Write a pitch <a href="/new">here</a>.</p>
-            <a href="/new"><button>add Pitch</button></a>
-            {%for dodo in all_pitches%}
-            <p>{{dodo.description}}</p>
-            {%endfor%}
+            
         </div>
     </div>
-    
+    <p>If you won't to add prtches,first sign up and then continue.</p>
+            <p>Do you want to Sign up click<a href="auth/register"> here</a></p>
+
+            <p>If you have sign in ,you can add your pitches,click  <a href="/new">here</a></p>
+            
+           
+            
+            {%for dodo in all_pitches%}
+                <p>{{dodo.description}}</p>
+                <a href="/comment/{{dodo.id}}"><a href="/new"><button>add Pitch</button></a><button>comment</button> </a>
+            {%endfor%}
+            
     <div class="row">
-      {{macro.displayPitchList(pitch)}}
+            
+      {{macro.displayPitchList(pitch_list)}}
     </div>  
 
     
