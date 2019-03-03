@@ -2,9 +2,14 @@
 
 {% block content %}
   <div class="container">
-    <div class="row">
+      <a href="{{url_for('main.index')}}">
+          <button type="button" class="btn btn-primary btn-sm" style="margin-bottom:10px;">
+              <span class="glyphicon glyphicon-chevron-left" ></span> Back
+          </button>
+      </a>
 
-      <!-- displaying  Username-->
+    <div class="row">
+              <!-- displaying  Username-->
       <div class="col-md-4">
           <h3> {{user.username| capitalize}} </h3>
 
