@@ -51,7 +51,6 @@ def new_pitch():
     if form.validate_on_submit():
         pitch = form.pitch.data
         description = form.description.data
-
         new_pitch = Pitch(pitch =pitch , description = description)
         new_pitch.save_pitches()
         return redirect(url_for('.index'))

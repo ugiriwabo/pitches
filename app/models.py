@@ -44,7 +44,7 @@ class Pitch(db.Model):
 
     id = db.Column(db.Integer,primary_key = True)
     pitch = db.Column(db.String)
-    category_id = db.Column(db.Integer)
+    category = db.Column(db.Integer)
     description = db.Column(db.String(255))
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
     pitches = db.relationship('Comment',backref = 'pitch',lazy="dynamic")
@@ -84,15 +84,15 @@ class Comment(db.Model):
     def get_all_comments(cls):
         return comment.query.all
 
-class PitchCategory(db.Model):
-    '''
-    Function that defines different categories of pitches
-    '''
-    __tablename__ ='pitch_categories'
+# class PitchCategory(db.Model):
+#     '''
+#     Function that defines different categories of pitches
+#     '''
+#     __tablename__ ='pitch_categories'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name_of_category = db.Column(db.String(255))
-    category_description = db.Column(db.String(255))
+#     id = db.Column(db.Integer, primary_key=True)
+#     name_of_category = db.Column(db.String(255))
+#     category_description = db.Column(db.String(255))
 
 class Profile(db.Model):
     '''

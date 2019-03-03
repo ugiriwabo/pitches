@@ -1,24 +1,21 @@
 {% extends 'base.html'%}
 {% import 'macros.html' as macro%}
 <!-- Styles block -->
-
+<body>
 {% block content %}
-    <div class="container" style="background-color:gainsboro; padding:10px; margin-right:100px;margin-left: 100px">
-        <div class="row" style="text-align:center; font-size:30px;">
-            <span style="font-size:40px; font-family: 'Akronim', cursive;">PITCHES</span>
-            
-        </div>
+    <div style="background-color:burlywood; padding:10px; margin-right:100px;margin-left: 100px;text-align:center; font-size:30px;">
+        <span style="font-size:60px; font-family: 'Akronim', cursive;">PITCHES</span>
     </div>
-    <p>If you won't to add prtches,first sign up and then continue.</p>
-            <p>Do you want to Sign up click<a href="auth/register"> here</a></p>
-
-            <p>If you have sign in ,you can add your pitches,click  <a href="/new">here</a></p>
-            
-           
+    <div>
+        <p>If you won't to add prtches,first sign up and then continue.</p>
+        <p>Do you want to Sign up click<a href="auth/register"> here</a></p>
+        <p>If you have sign in ,you can add your pitches,click  <a href="/new">here</a></p>
+        <a href="/new">add Pitch</a>
+    </div>   
             
             {%for dodo in all_pitches%}
                 <p>{{dodo.description}}</p>
-                <a href="/comment/{{dodo.id}}"><a href="/new"><button>add Pitch</button></a><button>comment</button> </a>
+                <a href="/comment/{{dodo.id}}"><button>comment</button> </a>
             {%endfor%}
             
     <div class="row">
