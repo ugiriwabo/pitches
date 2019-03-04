@@ -65,13 +65,5 @@ def new_comment(id):
         comment = form.comment.data
         new_comment = Comment(comment = comment , pitch_id=id, user=current_user)
         new_comment.save_comment()
-        return redirect(url_for('.new_comment'))
+        return redirect(url_for('.new_comment',id=id))
     return render_template('new_comment.html', imishwi=imishwi,comment_form=form)
-
-# @main.route('/view/comment/<int:id>')
-# def view_comments(id):
-#     '''
-#     Function that returs  the comments belonging to a particular pitch
-#     '''
-#     comments = Comment.get_comments(id)
-#     return render_template('view_comments.html',comments = comments, id=id)
