@@ -20,6 +20,9 @@
             {%for dodo in all_pitches%}
             <p>{{dodo.description}}</p>
             <a href="/comment/{{dodo.id}}" ><button>comment</button></a>
+            <a href="/comment/{{dodo.id}}" ><button>view comment</button></a>
+            <a href="/comment/{{dodo.id}}" ><button>Upvote</button></a>
+            <a href="/comment/{{dodo.id}}" ><button>Downvote</button></a>
             {%endfor%}
         </div>
     </div>
