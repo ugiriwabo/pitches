@@ -51,7 +51,8 @@ def new_pitch():
     if form.validate_on_submit():
         pitch = form.pitch.data
         description = form.description.data
-        new_pitch = Pitch(pitch =pitch , description = description)
+        category= form.category.data
+        new_pitch = Pitch(pitch =pitch , description = description ,category =category)
         new_pitch.save_pitches()
         return redirect(url_for('.index'))
     return render_template('new_pitch.html', pitch_form=form)
@@ -63,9 +64,12 @@ def new_comment(id):
     imishwi =Comment.query.filter_by(pitch_id = id).all()
     if form.validate_on_submit():
         comment = form.comment.data
-        new_comment = Comment(comment = comment , pitch_id=id, user=current_user)
+        
+        new_comment = Comment(comment = comment)
         new_comment.save_comment()
         return redirect(url_for('.new_comment',id=id))
     return render_template('new_comment.html', imishwi=imishwi,comment_form=form)
+
+
      
         

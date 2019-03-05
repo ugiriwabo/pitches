@@ -1,12 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,TextAreaField,SubmitField,ValidationError,SelectField,RadioField
+from wtforms import StringField,TextAreaField,SubmitField,ValidationError,SelectField
 from wtforms.validators import Required,Email
 from ..models import User,Pitch,Comment
 
 class PitchForm(FlaskForm):
     pitch =  TextAreaField('Pitch ', validators=[Required()])
     description = TextAreaField('description ', validators=[Required()])
-    # category = SelectField('Select Category', choices=[('Round Table pitches'), ('Genre-specific Round Table pitches'), ('Central pitches'),('Rough Cut Projects')])
+    category = SelectField('Select Category', choices=[('round-table-pitches' ,'Round Table pitches'), ('central-pitches','Central Pitches'),('rough-cut-projects' ,'Rough Cut Projects')])
     submit = SubmitField('Submit')
     
 
